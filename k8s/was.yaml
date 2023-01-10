@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: was-dp
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: was
+  template:
+    metadata:
+      labels:
+        app: was
+    spec:
+      containers:
+      - image: petclinictest.azurecr.io/was:v1
+        name: was-dp
+        ports:
+        - containerPort: 8080
+        resources: 
+          requests: 
+            cpu: 200m  
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: was-svc
+spec:
+  type: ClusterIP
+  selector:
+    app: was
+  ports:
+  - port: 8080
+    targetPort: 8080

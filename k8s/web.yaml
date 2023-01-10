@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: web-dp
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: web
+  template:
+    metadata:
+      labels:
+        app: web
+    spec:
+      containers:
+      - image: petclinictest.azurecr.io/web2:v1
+        name: web-dp
+        ports:
+        - containerPort: 80
+        resources: 
+          requests: 
+            cpu: 200m  
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: web-svc
+spec:
+  type: LoadBalancer
+  selector:
+    app: web
+  ports:
+  - port: 80
+	  name: http # SERVICE port name
+    protocol: TCP # The protocol the SERVICE will listen to
+    targetPort: 80
