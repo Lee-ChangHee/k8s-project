@@ -1,0 +1,6 @@
+FROM openjdk:11
+ADD spring-petclinic.tar /
+WORKDIR /spring-petclinic
+RUN ./mvnw clean \
+  &&./mvnw package
+ENTRYPOINT ["java","-jar", "-Dspring.profiles.active=mysql", "/spring-petclinic/target/spring-petclinic-2.7.3.jar"]
